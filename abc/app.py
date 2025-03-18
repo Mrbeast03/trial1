@@ -9,6 +9,7 @@ import logging
 from flask import send_from_directory
 from datetime import datetime, timedelta
 from datetime import date
+from flask_talisman import Talisman
 
 
 app = Flask(__name__)
@@ -56,6 +57,14 @@ class User(UserMixin):
 
     def get_id(self):
         return str(self.emp_id)
+Talisman(app)
+
+@app.before_request
+def enforce_https():
+    if request.url.startswith("http://") and not app.debug:
+        url = request.url.replace("http://", "https://", 1)
+        return redirect(url, code=301)
+
 
 @login_manager.user_loader
 def load_user(emp_id):
