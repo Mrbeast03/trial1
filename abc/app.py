@@ -35,20 +35,16 @@ db_config = {
     "port": "5432",
 }
 
-# Function to create a database connection
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:03130903@localhost:5432/HRM")
+
 def get_db_connection():
     try:
-        conn = psycopg2.connect(
-            host=db_config["host"],
-            database=db_config["database"],
-            user=db_config["user"],
-            password=db_config["password"],
-            port=db_config["port"],
-        )
+        conn = psycopg2.connect(DATABASE_URL)
         return conn
     except Exception as e:
         print(f"Database connection error: {e}")
         return None
+
 
 class User(UserMixin):
     def __init__(self, emp_id, first_name, last_name, email, photo=None):
