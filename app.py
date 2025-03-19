@@ -12,7 +12,7 @@ from datetime import date
 from flask_talisman import Talisman
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='abc/static', template_folder='abc/templates')
 app.secret_key = 'mansi'  # For session management
 app.config["SESSION_PERMANENT"] = True 
 
@@ -36,16 +36,20 @@ db_config = {
     "port": "5432",
 }
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:03130903@localhost:5432/HRM")
-
+# Function to create a database connection
 def get_db_connection():
     try:
-        conn = psycopg2.connect(DATABASE_URL)
+        conn = psycopg2.connect(
+            host=db_config["host"],
+            database=db_config["database"],
+            user=db_config["user"],
+            password=db_config["password"],
+            port=db_config["port"],
+        )
         return conn
     except Exception as e:
         print(f"Database connection error: {e}")
         return None
-
 
 class User(UserMixin):
     def __init__(self, emp_id, first_name, last_name, email, photo=None):
