@@ -1,3 +1,0 @@
-name = "finhrm"
-compatibility_flags = ["python_workers"]
-site = { bucket = "./abc/static" }
